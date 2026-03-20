@@ -116,8 +116,8 @@ export default function InvitePage() {
               {loading ? 'Joining...' : 'Join workspace →'}
             </button>
           </form>
-          <button onClick={() => setMode('host')} className="w-full mt-4 text-sm text-stone-500 hover:text-indigo-600 text-center">
-            Or continue as workspace host
+          <button onClick={() => router.push('/auth/setup')} className="w-full mt-4 text-sm text-stone-500 hover:text-pink-600 font-medium text-center">
+            Or create a new workspace instead
           </button>
         </div>
       </motion.div>

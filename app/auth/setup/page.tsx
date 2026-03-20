@@ -66,6 +66,10 @@ export default function SetupPage() {
               className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold shadow-sm hover:from-indigo-600 hover:to-indigo-700 active:scale-[0.98] disabled:opacity-60 transition-all">
               {loading ? 'Creating workspace...' : 'Create workspace →'}
             </button>
+            <button type="button" onClick={() => router.push('/auth/invite')}
+              className="w-full mt-2 py-3 text-sm text-indigo-600 font-medium hover:bg-indigo-50 rounded-xl transition-all">
+              Got an invite code? Join a workspace instead
+            </button>
           </form>
         </div>
       </motion.div>
