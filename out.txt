@@ -1,0 +1,5 @@
+app/auth/login/page.tsx(87,54): error TS2367: This comparison appears to be unintentional because the types '"login" | "signup"' and '"magic"' have no overlap.
+components/tasks/TasksView.tsx(146,32): error TS2345: Argument of type '{ workspaceId: string; userId: string; space: "professional" | "personal"; timeFilter: TimeFilter; status: "pending"; order: number; tags: string[]; id?: string | undefined; title?: string | undefined; ... 4 more ...; updatedAt?: Timestamp | undefined; }' is not assignable to parameter of type 'Omit<Task, "createdAt" | "id" | "updatedAt">'.
+  Types of property 'title' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.

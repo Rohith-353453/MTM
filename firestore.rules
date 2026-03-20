@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isWorkspaceMember(workspaceId) {
+      let ws = get(/databases/$(database)/documents/workspaces/$(workspaceId));
+      return request.auth != null && (
+        request.auth.uid == ws.data.userA.uid ||
+        (ws.data.userB != null && request.auth.uid == ws.data.userB.uid)
+      );
+    }
+
+    match /workspaces/{workspaceId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.userA.uid ||
+        (resource.data.userB != null && request.auth.uid == resource.data.userB.uid) ||
+        resource.data.userB == null
+      );
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userA.uid;
+      allow update: if request.auth != null && (
+        request.auth.uid == resource.data.userA.uid ||
+        (resource.data.userB == null && request.auth.uid == request.resource.data.userB.uid)
+      );
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userA.uid;
+    }
+
+    match /tasks/{taskId} {
+      allow read, write: if isWorkspaceMember(resource.data.workspaceId);
+      allow create: if isWorkspaceMember(request.resource.data.workspaceId);
+    }
+
+    match /habits/{habitId} {
+      allow read, write: if isWorkspaceMember(resource.data.workspaceId);
+      allow create: if isWorkspaceMember(request.resource.data.workspaceId);
+    }
+
+    match /habitLogs/{logId} {
+      allow read, write: if isWorkspaceMember(resource.data.workspaceId);
+      allow create: if isWorkspaceMember(request.resource.data.workspaceId);
+    }
+
+    match /sharedNotes/{workspaceId} {
+      allow read, write: if isWorkspaceMember(workspaceId);
+    }
+  }
+}
