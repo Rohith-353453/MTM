@@ -20,7 +20,7 @@ interface WorkspaceContextValue {
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -28,17 +28,18 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const loadWorkspace = async () => {
+    if (authLoading) return;
     if (!user) { setLoading(false); return; }
     setLoading(true);
     const ws = await getUserWorkspace(user.uid);
-    if (ws) setWorkspace(ws);
+    setWorkspace(ws || null);
     setLoading(false);
   };
 
   useEffect(() => {
     loadWorkspace();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, authLoading]);
 
   useEffect(() => {
     if (!workspace) return;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkspace } from '@/contexts/WorkspaceContext';
@@ -11,11 +11,16 @@ const AVATARS = ['🙂', '😎', '🦁', '🐼', '🦊', '🐸', '🦋', '🌟',
 
 export default function SetupPage() {
   const { user } = useAuth();
-  const { refetchWorkspace } = useWorkspace();
+  const { workspace, refetchWorkspace } = useWorkspace();
   const router = useRouter();
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('🙂');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (workspace && workspace.userB) router.replace('/workspace');
+    else if (workspace && !workspace.userB) router.replace('/auth/invite');
+  }, [workspace, router]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
