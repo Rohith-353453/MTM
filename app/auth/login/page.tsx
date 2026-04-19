@@ -24,7 +24,7 @@ export default function LoginPage() {
         await sendMagicLink(email);
         setMagicSent(true);
       } else if (mode === 'signup') {
-        await signUp(email, password);
+        await signUp(e-mail, password);
         router.push('/auth/setup');
       } else {
         await signIn(email, password);
